@@ -60,10 +60,10 @@ generalized-inverse-Gaussian latent-scale updates and Gaussian conditional
 updates for one root when the other is fixed. The same representation gives
 deterministic ECM equations for generalized-posterior modes. We present ridge
 endpoint regression, a conditionally Gaussian shrinkage construction for the
-zero-tilt case, deterministic fixed-feature readouts, and dynamic linear
+zero-tilt case, deterministic basis-expansion endpoint models, and dynamic linear
 endpoint states updated by alternating forward-filtering backward-sampling
 steps. These methods extend the MTI target from iid intervals to regression and
-dynamic settings; tolerance certification and response prediction require
+dynamic settings; tolerance guarantees and response prediction require
 separate calibration or response models.
 \end{abstract}
 
@@ -73,7 +73,8 @@ separate calibration or response models.
 Intervals with the same probability content can represent different statistical
 targets. Equal-tailed, mean-preserving, and shortest-contiguous intervals share
 content but differ in endpoint placement. The companion tolerance paper
-develops this geometry and uses it to define scan-calibrated tolerance actions.
+develops this geometry and uses it to define scan-calibrated tolerance
+procedures.
 The present paper focuses on a different question: once a fixed-content target
 has been specified, how can endpoint functions be estimated and summarized in
 regression and time-varying settings?
@@ -102,7 +103,7 @@ midpoint-gap summaries needed for interpretation. Second, we derive a
 pseudo-asymmetric-Laplace augmentation that gives Gaussian conditional root
 updates, generalized-inverse-Gaussian latent-scale updates, and a deterministic
 ECM mode algorithm. Third, we show how the same fixed-target computation extends
-to deterministic feature readouts and to dynamic linear endpoint states through
+to deterministic basis expansions and to dynamic linear endpoint states through
 alternating root-specific smoothing updates.
 
 The formal setting is deliberately bounded. Nonzero tilt is treated as fixed before
@@ -110,7 +111,7 @@ fitting or selected by an external rule. The conditionally Gaussian shrinkage
 construction is stated for the MPI case unless an additional propriety argument
 is supplied. Dynamic endpoint models describe time-varying interval-root
 functionals under the chosen loss and prior; they do not inherit the iid
-tolerance certificate studied in the companion paper.
+tolerance guarantee studied in the companion paper.
 
 \section{Fixed-Content Targets and Generalized Bayes}
 \label{sec:targets}
@@ -206,7 +207,7 @@ The signed vector \(\beta_s\) is an orientation coordinate for the gap. A direct
 lower-endpoint and upper-endpoint coefficient interpretation requires a design
 region where one root remains below the other.
 
-Ridge priors give a stable default for fixed-dimensional endpoint regression.
+Ridge priors give a regularized default for fixed-dimensional endpoint regression.
 Let
 \[
 \beta_j\sim\Normal(b_{0j},P_{0j}^{-1}),\qquad j=1,2,
@@ -292,21 +293,21 @@ is a Gaussian ridge solve. The numerical implementation uses objective
 backtracking and deterministic multi-start selection, because the joint
 criterion is not globally quadratic in the two roots.
 
-\section{Fixed Features and Time-Varying Endpoints}
+\section{Basis Expansions and Time-Varying Endpoints}
 \label{sec:extensions}
 
-Deterministic feature readouts use the static regression equations with a
-larger fixed design matrix. For example, a frozen echo-state or deep
-echo-state representation supplies deterministic nonlinear features
+Deterministic basis expansions use the static regression equations with a
+larger fixed design matrix. For example, a precomputed echo-state or deep
+echo-state representation supplies a deterministic nonlinear basis
 \(h_i\), after which the root functions are
 \[
 \eta_{1i}=h_i^\top\beta_1,\qquad
 \eta_{2i}=h_i^\top\beta_2.
 \]
-The recurrent feature construction is a representation of the predictors. The
+The recurrent basis construction is part of the predictor representation. The
 generalized posterior remains the fixed-target endpoint update in
-\eqref{eq:generalized-posterior}. Hyperparameter selection for the feature map
-must be recorded as part of the validation design.
+\eqref{eq:generalized-posterior}. The choices used to form the basis should be
+stated as part of the validation design.
 
 Time-varying endpoint models replace static coefficients by root-specific state
 trajectories. A basic dynamic linear specification is
@@ -345,13 +346,13 @@ retained draws, convergence diagnostics, effective sample sizes, and any
 root-label handling. For ECM calculations, reporting should include the
 selected content and tilt, the final objective value, the number of iterations,
 the stopping rule, and stability checks across starting values. For deterministic
-feature and time-varying endpoint models, the feature construction, state prior,
+basis-expansion and time-varying endpoint models, the basis construction, state prior,
 and validation protocol should be stated before empirical comparisons are made.
 
 Empirical evaluation must match the target. Endpoint regression can be assessed
 through held-out MTI loss, empirical content, interval width, and recovery of
 known endpoint functions in simulation. Tolerance validation requires a
-content-confidence action, such as the TCSP construction in the companion
+content-confidence tolerance procedure, such as the TCSP construction in the companion
 tolerance paper. Forecast evaluation requires a response-distribution model or a
 clearly defined predictive interval rule.
 
@@ -361,7 +362,7 @@ clearly defined predictive interval rule.
 MTI provides a way to specify fixed-content interval placement through
 retained-mean balance. The generalized-Bayes construction developed here turns a
 chosen fixed-content target into regularized endpoint regression, deterministic
-feature readouts, and time-varying endpoint models. The pseudo-AL augmentation
+basis-expansion endpoint models, and time-varying endpoint models. The pseudo-AL augmentation
 gives practical Gibbs and ECM computations while preserving the distinction
 between a loss update and a response likelihood.
 
@@ -370,8 +371,8 @@ uncertainty, and tolerance confidence are different statistical statements.
 Nonzero tilt should be fixed or selected by a separate rule before fitting.
 Regression and time-varying endpoint models require their own validation before
 claims about repeated-sampling tolerance behavior are made. This separation
-keeps the computation extensible without overstating the guarantees attached to
-the interval targets.
+keeps the computation extensible without overstating what the interval targets
+imply.
 
 \clearpage
 \bibliographystyle{plainnat}

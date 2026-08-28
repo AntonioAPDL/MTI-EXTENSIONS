@@ -48,7 +48,7 @@ This supplement records computational identities and implementation conditions
 for generalized-Bayes endpoint models based on the mean-preserving and
 mean-tilted interval losses. It gives the pseudo-asymmetric-Laplace
 augmentation, Gaussian root updates, fixed-tilt shifts, ECM mode equations,
-root-label summaries, fixed-feature endpoint readouts, dynamic endpoint-state
+root-label summaries, basis-expansion endpoint models, dynamic endpoint-state
 updates, and diagnostic requirements.
 \end{abstract}
 
@@ -213,17 +213,17 @@ Gaussian update above. This construction is stated for MPI. Extending nonzero
 tilt through random shrinkage scales requires its own propriety and diagnostic
 checks.
 
-\section{Deterministic Feature Readouts}
+\section{Deterministic Basis Expansions}
 \label{sec:supp-features}
 
-Let \(\mat X_{\mathrm F}\) denote a deterministic feature matrix obtained before
+Let \(\mat X_{\mathrm F}\) denote a deterministic basis matrix obtained before
 the endpoint update is fitted. The static formulas apply with
 \(\mat X_{\mathrm{obs}}\) replaced by the observed rows of
-\(\mat X_{\mathrm F}\). Echo-state and deep echo-state features
+\(\mat X_{\mathrm F}\). Echo-state and deep echo-state basis functions
 \citep{Jaeger2001EchoState,GallicchioMicheliPedrelli2018DeepESNDesign} are one
 source of such a matrix. The recurrent representation is part of the design
 construction; posterior uncertainty in the endpoint model is conditional on the
-chosen features unless the feature-generation mechanism is included in the
+chosen basis unless the basis-generation mechanism is included in the
 model.
 
 \section{Dynamic Endpoint-State Updates}
@@ -255,7 +255,7 @@ MCMC summaries should report multiple-chain convergence diagnostics, effective
 sample sizes, Monte Carlo error, root-label handling, and endpoint functional
 summaries. ECM summaries should report objective descent, iteration counts,
 stopping criteria, final roots, fitted content, tilt, and sensitivity to
-starting values. Fixed-feature analyses should report how the features were
+starting values. Basis-expansion analyses should report how the basis was
 chosen. Dynamic analyses should report state-prior choices, smoothing
 diagnostics, and whether discount or scale values were fixed in advance.
 

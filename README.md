@@ -7,9 +7,9 @@ been specified.
 
 The companion tolerance paper remains in `AntonioAPDL/RQR-GIBBS`. That paper
 develops the fixed-content geometry, the mean-preserving interval, the
-mean-tilted interval family, the TCSP tolerance action, and the iid tolerance
+mean-tilted interval family, the TCSP tolerance procedure, and the iid tolerance
 validation. This repository focuses on endpoint regression, deterministic
-feature readouts, dynamic endpoint models, Gibbs computation, ECM mode
+basis-expansion endpoint models, dynamic endpoint models, Gibbs computation, ECM mode
 calculation, and diagnostic requirements.
 
 ## Files
