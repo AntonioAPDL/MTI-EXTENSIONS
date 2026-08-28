@@ -1,4 +1,4 @@
-# MTI-EXTENSIONS
+# Mean-Tilted Intervals: Regression and Dynamic Models
 
 This repository contains the companion manuscript for mean-tilted interval
 regression and dynamic endpoint models. The paper develops generalized-Bayes

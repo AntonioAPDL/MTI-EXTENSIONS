@@ -20,7 +20,7 @@
   linkcolor=black,
   citecolor=black,
   urlcolor=black,
-  pdftitle={Mean-Tilted Interval Regression and Dynamic Endpoint Models},
+  pdftitle={Mean-Tilted Intervals: Regression and Dynamic Models},
   pdfauthor={Antonio De Leon, Raquel Prado, and Bruno Sanso}
 }
 
@@ -36,9 +36,8 @@
 \DeclareMathOperator{\argmin}{arg\,min}
 \newtheorem{proposition}{Proposition}
 
-\title{\vspace{-0.6cm}Mean-Tilted Interval Regression\\
-and Dynamic Endpoint Models:\\
-Generalized-Bayes Computation for Fixed-Content Targets}
+\title{\vspace{-0.6cm}Mean-Tilted Intervals:\\
+Regression and Dynamic Models}
 \author{Antonio De Leon$^{1}$ \and Raquel Prado$^{1}$ \and Bruno Sans\'o$^{1}$}
 \date{\small $^{1}$ Department of Statistics, University of California, Santa Cruz\\
 \vspace{0.25em}August 2026}
@@ -50,20 +49,22 @@ Generalized-Bayes Computation for Fixed-Content Targets}
 \begin{abstract}
 \noindent
 Mean-tilted intervals (MTI) provide a fixed-content family of interval targets
-indexed by retained-mean balance. This companion paper develops the
-generalized-Bayes computation needed to use those targets in endpoint
-regression and time-varying endpoint models. The construction combines a prior
-with a product-residual check loss to define endpoint uncertainty. A
-pseudo-asymmetric-Laplace normal-exponential representation gives
+indexed by retained-mean balance. This paper develops generalized-Bayes
+computation for using those targets in regression and time-varying endpoint
+models after content and tilt have been specified. The update combines a prior
+with an exponentiated residual-product check loss, yielding uncertainty
+summaries for endpoint functions rather than a response-distribution model.
+
+A pseudo-asymmetric-Laplace normal-exponential representation gives
 generalized-inverse-Gaussian latent-scale updates and Gaussian conditional
-updates for one root when the other is fixed. The same representation yields a
-deterministic expectation/conditional-maximization mode calculation. We describe
-ridge endpoint regression, conditionally Gaussian shrinkage for the zero-tilt
-case, deterministic fixed-feature readouts, and dynamic linear endpoint states
-updated by alternating forward-filtering backward-sampling steps. The resulting
-posterior summaries describe loss-defined endpoint functionals for a specified
-content and tilt. Tolerance certification and response prediction require
-separate interval actions or response-distribution models.
+updates for one root when the other is fixed. The same representation gives
+deterministic ECM equations for generalized-posterior modes. We present ridge
+endpoint regression, a conditionally Gaussian shrinkage construction for the
+zero-tilt case, deterministic fixed-feature readouts, and dynamic linear
+endpoint states updated by alternating forward-filtering backward-sampling
+steps. These methods extend the MTI target from iid intervals to regression and
+dynamic settings; tolerance certification and response prediction require
+separate calibration or response models.
 \end{abstract}
 
 \section{Introduction}
