@@ -52,8 +52,8 @@ Generalized-Bayes Computation for Fixed-Content Targets}
 Mean-tilted intervals (MTI) provide a fixed-content family of interval targets
 indexed by retained-mean balance. This companion paper develops the
 generalized-Bayes computation needed to use those targets in endpoint
-regression and time-varying endpoint models. The construction updates a prior
-with a product-residual check loss, rather than with a response likelihood. A
+regression and time-varying endpoint models. The construction combines a prior
+with a product-residual check loss to define endpoint uncertainty. A
 pseudo-asymmetric-Laplace normal-exponential representation gives
 generalized-inverse-Gaussian latent-scale updates and Gaussian conditional
 updates for one root when the other is fixed. The same representation yields a
@@ -90,9 +90,9 @@ This paper treats MPI and MTI as loss-defined targets. For a fixed content
 generalized posterior is obtained by updating a prior with
 \(\exp\{-\omega_{\mathrm R}L_{c,\delta,n}\}\)
 \citep{BissiriHolmesWalker2016GeneralBayes}. This update is useful for
-regularization and uncertainty summaries for endpoint functions. It is not a
-sampling model for responses. Consequently, posterior endpoint draws should not
-be read as posterior predictive response draws, and repeated-sampling tolerance
+regularization and uncertainty summaries for endpoint functions. Because the
+update targets endpoints, posterior endpoint draws should be interpreted as
+uncertainty summaries for the interval functional. Repeated-sampling tolerance
 statements require a separate calibration layer.
 
 The contributions are threefold. First, we formulate static endpoint regression
@@ -104,7 +104,7 @@ ECM mode algorithm. Third, we show how the same fixed-target computation extends
 to deterministic feature readouts and to dynamic linear endpoint states through
 alternating root-specific smoothing updates.
 
-The scope is deliberately bounded. Nonzero tilt is treated as fixed before
+The formal setting is deliberately bounded. Nonzero tilt is treated as fixed before
 fitting or selected by an external rule. The conditionally Gaussian shrinkage
 construction is stated for the MPI case unless an additional propriety argument
 is supplied. Dynamic endpoint models describe time-varying interval-root
@@ -237,8 +237,9 @@ For \(e_i=(y_i-\eta_{1i})(y_i-\eta_{2i})\),
 \label{eq:pseudo-al}
 \end{align}
 This identity augments the generalized-posterior factor in
-\eqref{eq:generalized-posterior}. It does not turn the product residual into a
-response likelihood for \(Y_i\).
+\eqref{eq:generalized-posterior}. The resulting kernel is defined on product
+residuals and should be interpreted as a loss factor for endpoints; a sampling
+density for \(Y_i\) would require an additional response model.
 
 The latent-scale full conditional is
 \[
@@ -336,7 +337,7 @@ dimension, open-faced-sandwich adjustment \citep{Shaby2014OpenFacedSandwich}
 can be used as a post-processing calibration for differentiable coefficient or
 endpoint summaries when consistent curvature and score-variance estimates are
 available. This adjustment calibrates generalized-posterior uncertainty; it is
-not a response likelihood.
+separate from any response-distribution model used for prediction.
 
 For MCMC calculations, reporting should include the number of chains, warmup and
 retained draws, convergence diagnostics, effective sample sizes, and any
