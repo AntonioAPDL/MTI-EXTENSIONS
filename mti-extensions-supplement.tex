@@ -1,0 +1,270 @@
+% !TeX program = pdflatex
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\setstretch{1.08}
+\usepackage{amsmath,amssymb,mathtools,bm,booktabs,tabularx,array,amsthm}
+\usepackage{enumitem}
+\usepackage[round,authoryear]{natbib}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  pdftitle={Supplementary Material: Mean-Tilted Interval Regression and Dynamic Endpoint Models},
+  pdfauthor={Antonio De Leon, Raquel Prado, and Bruno Sanso}
+}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\GIG}{\mathrm{GIG}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+\DeclareMathOperator{\argmin}{arg\,min}
+\newtheorem{proposition}{Proposition}
+\renewcommand{\theproposition}{S\arabic{proposition}}
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\title{Supplementary Material for \emph{Mean-Tilted Interval Regression
+and Dynamic Endpoint Models}}
+\author{Antonio De Leon \and Raquel Prado \and Bruno Sans\'o}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+This supplement records computational identities and implementation conditions
+for generalized-Bayes endpoint models based on the mean-preserving and
+mean-tilted interval losses. It gives the pseudo-asymmetric-Laplace
+augmentation, Gaussian root updates, fixed-tilt shifts, ECM mode equations,
+root-label summaries, fixed-feature endpoint readouts, dynamic endpoint-state
+updates, and diagnostic requirements.
+\end{abstract}
+
+\section{Notation and Targets}
+\label{sec:supp-targets}
+
+For an observation \(y_i\) and raw roots \(\eta_{1i}\) and \(\eta_{2i}\),
+define
+\[
+e_i=(y_i-\eta_{1i})(y_i-\eta_{2i}),\qquad
+\rho_c(r)=r\{c-\ind(r<0)\}.
+\]
+The MPI loss is \(\rho_c(e_i)\). With fixed tilt \(\delta_i\), the MTI loss is
+\[
+\rho_c(e_i)-c\delta_i(\eta_{1i}+\eta_{2i}-2y_i).
+\]
+The cumulative loss over observed indices \(I_{\mathrm{obs}}\) is denoted by
+\(L_{c,\delta}(\theta)\). The fixed-target generalized posterior is
+\[
+\pi(\theta\mid D)
+\propto
+\exp\{-\omega_{\mathrm R}L_{c,\delta}(\theta)\}\pi_0(\theta).
+\]
+The symbols \(c\), \(\delta\), and \(\omega_{\mathrm R}\) have different roles:
+content, retained-mean tilt, and learning rate, respectively.
+
+\section{Root Labels and Endpoint Summaries}
+\label{sec:supp-labels}
+
+The product-residual loss is invariant to exchanging the two raw roots. With
+exchangeable root priors, the unordered pair is identified but the labels
+``root 1'' and ``root 2'' are not. Endpoint summaries are therefore computed
+after sorting the roots at the evaluation points:
+\[
+L_i=\min(\eta_{1i},\eta_{2i}),\qquad
+U_i=\max(\eta_{1i},\eta_{2i}),\qquad
+W_i=U_i-L_i.
+\]
+
+For static linear roots, define
+\[
+\beta_m=\frac{\beta_1+\beta_2}{2},\qquad
+\beta_s=\frac{\beta_2-\beta_1}{2}.
+\]
+Then \(M(x)=x^\top\beta_m\), \(S(x)=x^\top\beta_s\), and
+\[
+L(x)=M(x)-|S(x)|,\qquad
+U(x)=M(x)+|S(x)|,\qquad
+W(x)=2|S(x)|.
+\]
+The midpoint coefficient \(\beta_m\) is root-label invariant. The signed gap
+coefficient \(\beta_s\) changes sign under a root swap. Lower- and
+upper-endpoint coefficient summaries require a declared design region where the
+two roots remain ordered.
+
+\section{Pseudo-AL Augmentation}
+\label{sec:supp-pseudo-al}
+
+Let
+\[
+\sigma_{\mathrm R}=\omega_{\mathrm R}^{-1},\qquad
+\xi_c=\frac{1-2c}{c(1-c)},\qquad
+\phi_c=\frac{2}{c(1-c)}.
+\]
+The single-observation loss factor satisfies
+\begin{align}
+&\frac{c(1-c)}{\sigma_{\mathrm R}}
+\exp\{-\rho_c(e_i)/\sigma_{\mathrm R}\}\notag\\
+&\quad=\int_0^\infty
+\Normal(e_i\mid \xi_cv_i,\phi_c\sigma_{\mathrm R}v_i)
+\Exp(v_i\mid\mathrm{rate}=1/\sigma_{\mathrm R})\,dv_i .
+\end{align}
+Thus
+\[
+v_i\mid\cdot\sim
+\GIG\left\{
+\frac12,\
+\frac{1}{2\sigma_{\mathrm R}c(1-c)},\
+\frac{c(1-c)e_i^2}{2\sigma_{\mathrm R}}
+\right\}.
+\]
+The latent scales are part of the computational representation of a
+loss-based update. They are not latent response variables.
+
+\section{Gaussian Root Updates and Fixed Tilt}
+\label{sec:supp-static-updates}
+
+Let \(\mat X_{\mathrm{obs}}\) be the observed design matrix and let
+\(\mat W_v=\diag\{(\phi_c\sigma_{\mathrm R}v_i)^{-1}:i\in I_{\mathrm{obs}}\}\).
+Conditional on the second root, define
+\[
+\mat A_1=\diag(\vect y_{\mathrm{obs}}-\vect\eta_{2,\mathrm{obs}})
+\mat X_{\mathrm{obs}},
+\qquad
+\vect z_1=\vect y_{\mathrm{obs}}\circ
+(\vect y_{\mathrm{obs}}-\vect\eta_{2,\mathrm{obs}})-\xi_c\vect v.
+\]
+For Gaussian prior canonical parameters \((\mat Q_{01},\vect h_{01})\),
+\[
+\mat Q_1=\mat Q_{01}+\mat A_1^\top\mat W_v\mat A_1,\qquad
+\vect h_1=\vect h_{01}+\mat A_1^\top\mat W_v\vect z_1.
+\]
+Hence
+\[
+\beta_1\mid\cdot\sim
+\Normal(\mat Q_1^{-1}\vect h_1,\mat Q_1^{-1}).
+\]
+The second root is updated by exchanging labels.
+
+For fixed nonzero tilt, let \(\vect\delta_{\mathrm{obs}}\) be fixed over the
+observed design. The precision matrix is unchanged, and the canonical vector is
+shifted to
+\[
+\vect h_1^{\mathrm{MTI}}
+=\vect h_1+
+\omega_{\mathrm R}c\mat X_{\mathrm{obs}}^\top\vect\delta_{\mathrm{obs}},
+\]
+with the same shift for the second root. Proper Gaussian priors give a finite
+normalizing constant in finite dimension because the tilt is linear in the
+roots.
+
+\section{ECM Mode Calculation}
+\label{sec:supp-ecm}
+
+The ECM calculation maximizes the fixed generalized-posterior kernel. It uses
+the exact inverse-scale moment
+\[
+\tau_i=E(v_i^{-1}\mid\cdot)=\frac{1}{c(1-c)|e_i|}
+\]
+away from \(e_i=0\), with a prespecified numerical floor near zero. Holding
+\(\beta_2\) fixed, set
+\[
+\mat B_1=\diag(\vect y_{\mathrm{obs}}-\vect\eta_{2,\mathrm{obs}})
+\mat X_{\mathrm{obs}},
+\qquad
+\vect r_1=\vect y_{\mathrm{obs}}^{\,2}
+-\vect y_{\mathrm{obs}}\circ\vect\eta_{2,\mathrm{obs}}.
+\]
+With ridge prior precision \(\mat P_1\), the conditional maximization solves
+\[
+\left\{\mat P_1+
+\frac{1}{\phi_c\sigma_{\mathrm R}}\mat B_1^\top\diag(\vect\tau)\mat B_1
+\right\}\beta_1
+=
+\frac{1}{\phi_c\sigma_{\mathrm R}}
+\mat B_1^\top\{\diag(\vect\tau)\vect r_1-\xi_c\vect 1\}
++\omega_{\mathrm R}c\mat X_{\mathrm{obs}}^\top\vect\delta_{\mathrm{obs}}.
+\]
+The second root uses the same equation with labels exchanged. A full ECM cycle
+updates the latent-scale moments, solves the two conditional Gaussian systems,
+and accepts the result only if the exact penalized objective decreases.
+
+\section{Conditionally Gaussian Shrinkage}
+\label{sec:supp-shrinkage}
+
+The zero-tilt MPI sampler can use a conditionally Gaussian regularized
+horseshoe prior through the Nishimura--Suchard representation
+\citep{CarvalhoPolsonScott2010HS,PiironenVehtari2017RHS,NishimuraSuchard2023SSS}.
+Conditional on the local, global, and slab-scale states, each root coefficient
+block has a Gaussian prior precision and therefore fits directly into the
+Gaussian update above. This construction is stated for MPI. Extending nonzero
+tilt through random shrinkage scales requires its own propriety and diagnostic
+checks.
+
+\section{Deterministic Feature Readouts}
+\label{sec:supp-features}
+
+Let \(\mat X_{\mathrm F}\) denote a deterministic feature matrix obtained before
+the endpoint update is fitted. The static formulas apply with
+\(\mat X_{\mathrm{obs}}\) replaced by the observed rows of
+\(\mat X_{\mathrm F}\). Echo-state and deep echo-state features
+\citep{Jaeger2001EchoState,GallicchioMicheliPedrelli2018DeepESNDesign} are one
+source of such a matrix. The recurrent representation is part of the design
+construction; posterior uncertainty in the endpoint model is conditional on the
+chosen features unless the feature-generation mechanism is included in the
+model.
+
+\section{Dynamic Endpoint-State Updates}
+\label{sec:supp-dynamic}
+
+A dynamic endpoint model replaces static coefficients by root-specific state
+trajectories,
+\[
+\eta_{jt}=f_t^\top\theta_{jt},\qquad
+\theta_{jt}=G_t\theta_{j,t-1}+\varepsilon_{jt},\qquad j=1,2.
+\]
+Gaussian initial and evolution distributions give a Gaussian prior over each
+root path. Because the product residual contains both endpoint paths, the joint
+augmented log density is quartic in the two paths. Conditional on one complete
+path, however, the other path has a linear Gaussian observation equation.
+Root-specific forward-filtering backward-sampling can therefore be alternated
+within the specified fixed-target generalized posterior
+\citep{GoncalvesMigonBastos2020DQLM}.
+
+Discount factors and component scales are part of the state prior. Fixed values
+or precomputed templates define a fixed target. Adaptive choices are best
+reported as sensitivity analyses unless they are embedded in a fully specified
+probability model.
+
+\section{Diagnostics and Evidence Boundaries}
+\label{sec:supp-diagnostics}
+
+MCMC summaries should report multiple-chain convergence diagnostics, effective
+sample sizes, Monte Carlo error, root-label handling, and endpoint functional
+summaries. ECM summaries should report objective descent, iteration counts,
+stopping criteria, final roots, fitted content, tilt, and sensitivity to
+starting values. Fixed-feature analyses should report how the features were
+chosen. Dynamic analyses should report state-prior choices, smoothing
+diagnostics, and whether discount or scale values were fixed in advance.
+
+These diagnostics assess computation for a fixed endpoint target. They do not
+establish tolerance validity or response-predictive calibration. Such claims
+require a separate validation design aligned with the intended statistical
+statement.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
