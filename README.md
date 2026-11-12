@@ -29,3 +29,18 @@ make all
 ```
 
 Generated PDFs and TeX auxiliary files are ignored.
+
+## Mathematical checks
+
+```bash
+make test
+```
+
+The standard-library Python tests verify the midpoint and root forms of the
+MTI loss, the retained-mean convention, and the positive tilt shift in both
+Gaussian root conditionals. They also reject the reversed midpoint sign.
+
+The midpoint display uses `-2c delta (m-y)`, consistently with the retained
+mean `mu+delta` and the supplement's root-form loss. This corrects the former
+midpoint-display sign; the root-form loss, conditional updates, and scientific
+results are unchanged.

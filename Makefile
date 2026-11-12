@@ -1,13 +1,17 @@
 PDFLATEX ?= pdflatex
 BIBTEX ?= bibtex
+PYTHON ?= python3
 
-.PHONY: all pdf supplement clean
+.PHONY: all pdf supplement test clean
 
 all: pdf supplement
 
 pdf: main.pdf
 
 supplement: mti-extensions-supplement.pdf
+
+test:
+	$(PYTHON) -B -m unittest discover -s tests -v
 
 main.pdf: main.tex refs.bib
 	$(PDFLATEX) -interaction=nonstopmode -halt-on-error main.tex
